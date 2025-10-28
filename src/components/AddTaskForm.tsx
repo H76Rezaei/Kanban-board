@@ -2,26 +2,38 @@ import type { Task } from "../types";
 import { useState } from "react";
 
 interface AddTaskFormProps {
-  addTask: (task: Task) => void;
+  onSubmit: (task: Task) => void; // Works for both add and edit
   closeForm: () => void;
+  taskToEdit?: Task; // Optional - if present, we're editing
 }
 
-export function AddTaskForm({ addTask, closeForm }: AddTaskFormProps) {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [priority, setPriority] = useState<Task['priority']>('medium');
+export function AddTaskForm({ onSubmit, closeForm, taskToEdit }: AddTaskFormProps) {
+  const [title, setTitle] = useState(taskToEdit?.title || '');
+  const [description, setDescription] = useState(taskToEdit?.description || '');
+  const [priority, setPriority] = useState<Task['priority']>(taskToEdit?.priority || 'medium');
+
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newTask: Task = {
-      id: crypto.randomUUID(),
-      title: title, 
-      description: description,
-      priority: priority,
-      status: "backlog",
-      createdAt: Date.now()
-    };
-    addTask(newTask);
+    if (taskToEdit) {
+      const updatedTask: Task = {
+        ...taskToEdit,
+        title: title,
+        description: description,
+        priority: priority,
+      };
+      onSubmit(updatedTask);
+    } else {  
+      const newTask: Task = {
+        id: crypto.randomUUID(),
+        title: title, 
+        description: description,
+        priority: priority,
+        status: "backlog",
+        createdAt: Date.now()
+      };
+      onSubmit(newTask);
+    }
     closeForm();
   };
 
@@ -83,7 +95,7 @@ export function AddTaskForm({ addTask, closeForm }: AddTaskFormProps) {
               type="submit"
               className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
             >
-              Add Task
+              {taskToEdit ? 'Save Changes' : 'Add Task'}
             </button>
           </div>
         </form>

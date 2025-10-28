@@ -27,7 +27,9 @@ function App() {
   const addTask = (newTask: Task) => {
     setTasks([...tasks, newTask]);
   };
-
+  const editTask = (task: Task) => {
+    setTasks(tasks.map(t => t.id === task.id ? task : t));
+  };
   // Helper function to get tasks by status
   const getTasksByStatus = (status: Task["status"]) => {
     return tasks.filter(task => task.status === status);
@@ -60,6 +62,7 @@ function App() {
               status={status}
               addTask={addTask}
               deleteTask={deleteTask}
+              editTask={editTask}
             />
           ))}
         </div>

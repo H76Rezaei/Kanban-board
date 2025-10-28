@@ -11,9 +11,10 @@ interface ColumnProps {
   status: Task["status"];  // which column (backlog, todo, etc)
   addTask: (task: Task) => void;
   deleteTask: (taskId: string) => void;
+  editTask: (task: Task) => void; 
 }
 
-export function Column({ title, tasks, status, addTask, deleteTask }: ColumnProps) {
+export function Column({ title, tasks, status, addTask, deleteTask, editTask }: ColumnProps) {
   const [isFormOpen, setIsFormOpen] = useState(false);
   
   const { setNodeRef } = useDroppable({
@@ -36,15 +37,15 @@ export function Column({ title, tasks, status, addTask, deleteTask }: ColumnProp
         </div>
         <div>
           {tasks.map(task => (
-            <TaskCard key={task.id} task={task} deleteTask={deleteTask}/>
+            <TaskCard key={task.id} task={task} deleteTask={deleteTask} editTask={editTask}/>
           ))}
         </div>
       </div>
       
       {isFormOpen && (
         <AddTaskForm 
-          addTask={addTask} 
-          closeForm={() => setIsFormOpen(false)} 
+          onSubmit={addTask} 
+          closeForm={() => setIsFormOpen(false)}
         />
       )}
     </>
