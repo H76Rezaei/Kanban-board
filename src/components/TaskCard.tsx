@@ -2,10 +2,10 @@ import type { Task } from '../types';
 import { useDraggable } from '@dnd-kit/core';
 import { FaTrashAlt } from "react-icons/fa";
 
-// TaskCard.tsx - update interface and add button
+
 interface TaskCardProps {
   task: Task;
-  deleteTask: (taskId: string) => void;  // ← Add this
+  deleteTask: (taskId: string) => void;  
 }
 
 export function TaskCard({ task, deleteTask }: TaskCardProps) {
@@ -36,7 +36,7 @@ export function TaskCard({ task, deleteTask }: TaskCardProps) {
         </button>
       </div>
       
-      <div {...listeners} {...attributes}>  {/* ← Move drag to inner div */}
+      <div {...listeners} {...attributes}> 
         <p className="text-gray-700 mb-2">{task.description}</p>
         <div className="text-sm text-gray-500">     
           Priority: <span className={`font-medium ${task.priority === 'high' ? 'text-red-600' : task.priority === 'medium' ? 'text-yellow-600' : 'text-green-600'}`}>{task.priority}</span>
